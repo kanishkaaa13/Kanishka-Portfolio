@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanishka Arde - E&TC Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Reenie+Beanie&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#faf8f4;--ink:#1a1814;--ink-soft:#3d3930;--muted:#8a8278;--border:#e8e3da;--pink:#e91e7a;--pink-light:#fce4ec;--purple:#7c5cbf;--blue:#2563eb;--green:#059669;--teal:#0891b2;--gold:#d97706;--tb:#0d1117;--tg:#3fb950;--white:#ffffff;--alt:#f5f2ec;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;cursor:none;}
+.cursor-dot{width:8px;height:8px;background:var(--ink);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;}
+.cursor-ring{width:36px;height:36px;border:1.5px solid var(--ink);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .3s,height .3s,opacity .3s;}
+.cursor-ring.hovered{width:60px;height:60px;opacity:.4;}
+.progress-bar{position:fixed;top:64px;left:0;width:0%;height:2px;background:linear-gradient(90deg,var(--pink),var(--purple),var(--blue));z-index:1001;}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 6%;height:64px;background:rgba(250,248,244,.93);backdrop-filter:blur(20px);border-bottom:1px solid rgba(232,227,218,.6);transition:box-shadow .3s;}
+nav.scrolled{box-shadow:0 2px 30px rgba(0,0,0,.06);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:600;color:var(--ink);text-decoration:none;white-space:nowrap;}
+.nav-center{display:flex;align-items:center;gap:2px;}
+.nav-link{text-decoration:none;color:var(--ink-soft);font-size:.85rem;font-weight:500;padding:6px 14px;border-radius:4px;position:relative;transition:color .2s;}
+.nav-link::after{content:'';position:absolute;bottom:2px;left:14px;right:14px;height:1.5px;background:var(--ink);transform:scaleX(0);transition:transform .3s;}
+.nav-link:hover::after,.nav-link.active::after{transform:scaleX(1);}
+.nav-link:hover,.nav-link.active{color:var(--ink);}
+.nav-icons{display:flex;align-items:center;gap:10px;}
+.nav-icon-link{display:flex;align-items:color:var(--ink-soft);padding:6px;border-radius:6px;transition:color .2s,background .2s;text-decoration:none;}
+.nav-icon-link:hover{color:var(--ink);background:var(--border);}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:none;}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--ink);}
+.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(250,248,244,.98);padding:20px 6%;flex-direction:column;gap:4px;z-index:999;border-bottom:1px solid var(--border);}
+.mobile-menu.open{display:flex;}
+.mobile-link{text-decoration:none;color:var(--ink);font-size:1rem;font-weight:500;padding:12px 0;border-bottom:1px solid var(--border);}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:.1s;}
+.reveal-delay-2{transition-delay:.2s;}
+.reveal-delay-3{transition-delay:.3s;}
+.reveal-delay-4{transition-delay:.4s;}
+section{min-height:100vh;position:relative;overflow:hidden;}
+
+/* HOME */
+#home{display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:100px 6% 60px;gap:60px;background:var(--ink);}
+.hero-text{position:relative;z-index:2;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7ec8e3;margin-bottom:28px;}
+.hero-eyebrow span{display:inline-block;width:30px;height:1px;background:var(--muted);}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,6vw,5.5rem);font-weight:300;line-height:1.05;letter-spacing:-.02em;color:#ffffff;margin-bottom:8px;}
+.hero-name em{font-style:italic;font-weight:600;}
+.hero-title-line{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,2.2vw,1.7rem);font-weight:300;color:var(--muted);font-style:italic;margin-bottom:32px;}
+.hero-desc{font-size:.95rem;line-height:1.8;color:rgba(255,255,255,0.6);max-width:460px;margin-bottom:40px;}
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px;}
+.hero-badge{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:7px 16px;border-radius:50px;font-size:.8rem;font-weight:500;color:rgba(255,255,255,0.7);}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px;}
+.btn-primary{padding:13px 28px;background:#ffffff;color:var(--ink);border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:none;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .2s,transform .2s;}
+.btn-primary:hover{background:var(--cream);transform:translateY(-2px);}
+.hero-visual{position:relative;display:flex;align-items:center;justify-content:center;height:580px;z-index:2;}
+.photo-frame{position:relative;width:320px;height:410px;}
+.photo-bg{position:absolute;inset:16px -16px -16px 16px;background:rgba(233,30,122,0.2);border-radius:12px;z-index:0;}
+.photo-img{position:relative;z-index:1;width:100%;height:100%;border-radius:12px;object-fit:cover;object-position:top center;border:1px solid rgba(255,255,255,.15);box-shadow:0 20px 60px rgba(0,0,0,.4);}
+.photo-placeholder{position:relative;z-index:1;width:100%;height:100%;border-radius:12px;background:rgba(255,255,255,0.06);border:2px dashed rgba(255,255,255,0.2);display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);text-align:center;padding:20px;}
+.photo-placeholder svg{margin-bottom:16px;opacity:0.4;}
+.photo-placeholder p{font-size:.8rem;line-height:1.6;}
+.photo-stamp{position:absolute;z-index:3;display:flex;flex-direction:column;align-items:center;text-align:center;border-radius:50%;border:2px double;padding:10px 12px;pointer-events:none;}
+.ps-sm{font-size:.42rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;}
+.ps-city{font-family:'Reenie Beanie',cursive;font-size:1.4rem;line-height:1;}
+.stamp-1{top:-20px;right:-30px;width:90px;height:90px;color:var(--pink);border-color:var(--pink);animation:sfloat 5s ease-in-out infinite;}
+.stamp-2{bottom:30px;left:-40px;width:82px;height:82px;color:var(--purple);border-color:var(--purple);animation:sfloat 6s ease-in-out infinite 1s;}
+.stamp-3{top:40%;right:-48px;width:78px;height:78px;color:var(--teal);border-color:var(--teal);animation:sfloat 7s ease-in-out infinite 2s;}
+@keyframes sfloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* ABOUT - SECOND PAGE */
+#about{background:var(--alt);padding:120px 6% 80px;display:flex;flex-direction:column;justify-content:center;}
+.about-grid{display:grid;grid-template-columns:340px 1fr 1fr;gap:60px;align-items:start;}
+.section-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
+.section-eyebrow::before{content:'';display:inline-block;width:24px;height:1px;background:var(--muted);}
+.section-heading{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,4vw,4rem);font-weight:600;line-height:1.1;letter-spacing:-.02em;margin-bottom:28px;}
+.section-heading em{font-style:italic;font-weight:300;}
+.about-body{font-size:.95rem;line-height:1.85;color:var(--ink-soft);margin-bottom:20px;}
+.about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px;padding-top:40px;border-top:1px solid var(--border);}
+.stat-number{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;line-height:1;color:var(--ink);}
+.stat-label{font-size:.78rem;color:var(--muted);margin-top:4px;}
+.skills-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;margin-bottom:28px;color:var(--ink);}
+.skill-item{margin-bottom:22px;}
+.skill-header{display:flex;justify-content:space-between;font-size:.85rem;font-weight:500;margin-bottom:8px;color:var(--ink-soft);}
+.skill-bar-bg{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.skill-bar-fill{height:100%;border-radius:2px;width:0%;transition:width 1.2s cubic-bezier(.16,1,.3,1);}
+.skill-bar-fill.pink{background:linear-gradient(90deg,#e91e7a,#f472b6);}
+.skill-bar-fill.blue{background:linear-gradient(90deg,#2563eb,#60a5fa);}
+.skill-bar-fill.green{background:linear-gradient(90deg,#059669,#34d399);}
+.skill-bar-fill.purple{background:linear-gradient(90deg,#7c5cbf,#a78bfa);}
+.skill-bar-fill.teal{background:linear-gradient(90deg,#0891b2,#22d3ee);}
+.skill-bar-fill.gold{background:linear-gradient(90deg,#d97706,#fbbf24);}
+.system-health{margin-top:40px;padding:24px;background:var(--tb);border-radius:10px;}
+.sh-header{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--tg);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.sh-dot{width:8px;height:8px;border-radius:50%;background:var(--tg);animation:blink 1.5s ease-in-out infinite;}
+.sh-item{margin-bottom:14px;}
+.sh-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:#8b949e;margin-bottom:6px;display:flex;justify-content:space-between;}
+.sh-bar-bg{height:6px;background:#21262d;border-radius:3px;overflow:hidden;}
+.sh-bar-fill{height:100%;border-radius:3px;width:0%;transition:width 1.4s cubic-bezier(.16,1,.3,1);}
+.sh-bar-fill.java{background:linear-gradient(90deg,#f0883e,#ffa657);}
+.sh-bar-fill.sql{background:linear-gradient(90deg,#58a6ff,#79c0ff);}
+.sh-bar-fill.dsa{background:linear-gradient(90deg,#3fb950,#56d364);}
+.sh-bar-fill.python{background:linear-gradient(90deg,#d2a8ff,#bc8cff);}
+
+/* ABOUT PHOTO COLUMN */
+.about-photo-col{display:flex;flex-direction:column;align-items:center;}
+.about-photo-frame{position:relative;width:280px;height:360px;margin-bottom:24px;}
+.about-photo-bg{position:absolute;inset:12px -12px -12px 12px;background:var(--pink-light);border-radius:12px;z-index:0;}
+.about-photo-img{position:relative;z-index:1;width:100%;height:100%;border-radius:12px;object-fit:cover;object-position:top center;border:1px solid rgba(0,0,0,.08);box-shadow:0 16px 48px rgba(0,0,0,.12);}
+/* Placeholder when no photo provided */
+.about-photo-placeholder{position:relative;z-index:1;width:100%;height:100%;border-radius:12px;background:linear-gradient(135deg,#fce4ec,#f3e5f5);border:2px dashed rgba(124,92,191,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);text-align:center;padding:24px;}
+.about-photo-placeholder svg{width:48px;height:48px;margin-bottom:12px;color:var(--purple);opacity:0.5;}
+.about-photo-placeholder p{font-size:.78rem;line-height:1.6;color:var(--muted);}
+.about-photo-placeholder strong{font-size:.82rem;color:var(--purple);display:block;margin-bottom:6px;}
+.about-photo-tag{font-family:'Reenie Beanie',cursive;font-size:1.1rem;color:var(--muted);transform:rotate(-3deg);margin-top:4px;}
+
+/* EDUCATION */
+#education{background:#fff;padding:120px 6% 80px;display:flex;flex-direction:column;justify-content:center;}
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:60px;}
+.edu-card{background:var(--cream);border:1px solid var(--border);border-radius:16px;padding:40px;position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s;cursor:none;}
+.edu-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple),var(--pink));transform:scaleX(0);transform-origin:left;transition:transform .4s;}
+.edu-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.08);}
+.edu-card:hover::before{transform:scaleX(1);}
+.edu-year{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:1px;margin-bottom:12px;}
+.edu-degree{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;line-height:1.2;margin-bottom:8px;color:var(--ink);}
+.edu-school{font-size:.88rem;color:var(--muted);margin-bottom:16px;}
+.edu-details{font-size:.83rem;line-height:1.7;color:var(--ink-soft);}
+.edu-tag{display:inline-block;margin-top:14px;padding:4px 12px;background:var(--pink-light);color:var(--pink);border-radius:20px;font-size:.75rem;font-weight:600;}
+
+/* PORTFOLIO */
+#portfolio{background:var(--ink);padding:120px 6% 80px;}
+.portfolio-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:20px;}
+.portfolio-eyebrow::before{content:'';display:inline-block;width:24px;height:1px;background:rgba(255,255,255,.3);}
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:60px;}
+.project-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:36px 28px;cursor:none;transition:all .4s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;}
+.project-card:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);transform:translateY(-8px);}
+.project-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:rgba(255,255,255,.3);letter-spacing:3px;margin-bottom:16px;}
+.project-title{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:700;color:rgba(255,255,255,.92);line-height:1.3;margin-bottom:14px;}
+.project-desc{font-size:.83rem;line-height:1.75;color:rgba(255,255,255,.55);margin-bottom:24px;flex:1;}
+.project-stack{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;}
+.stack-tag{padding:4px 10px;border:1px solid rgba(255,255,255,.12);border-radius:20px;font-size:.7rem;color:rgba(255,255,255,.5);font-family:'JetBrains Mono',monospace;}
+.stack-tag.hl{border-color:rgba(233,30,122,.4);color:#f472b6;background:rgba(233,30,122,.08);}
+.stack-tag.blue{border-color:rgba(37,99,235,.4);color:#60a5fa;background:rgba(37,99,235,.08);}
+.stack-tag.green{border-color:rgba(5,150,105,.4);color:#34d399;background:rgba(5,150,105,.08);}
+.stack-tag.purple{border-color:rgba(124,92,191,.4);color:#a78bfa;background:rgba(124,92,191,.08);}
+.stack-tag.teal{border-color:rgba(8,145,178,.4);color:#22d3ee;background:rgba(8,145,178,.08);}
+.stack-tag.gold{border-color:rgba(217,119,6,.4);color:#fbbf24;background:rgba(217,119,6,.08);}
+/* Tech stack section within project card */
+.project-techstack-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:2px;color:rgba(255,255,255,.25);text-transform:uppercase;margin-bottom:8px;}
+
+/* RESUME */
+#resume{background:var(--cream);padding:120px 6% 80px;display:flex;flex-direction:column;justify-content:center;}
+.resume-grid{display:grid;grid-template-columns:1fr 2fr;gap:60px;margin-top:60px;}
+.resume-section-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:2px;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.contact-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;font-size:.85rem;color:var(--ink-soft);}
+.contact-item svg{flex-shrink:0;margin-top:2px;color:var(--muted);}
+.lang-item{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:.85rem;}
+.lang-dots{display:flex;gap:4px;}
+.lang-dot{width:8px;height:8px;border-radius:50%;background:var(--border);}
+.lang-dot.filled{background:var(--ink);}
+.timeline{position:relative;padding-left:28px;}
+.timeline::before{content:'';position:absolute;left:4px;top:8px;bottom:8px;width:1px;background:var(--border);}
+.timeline-item{position:relative;margin-bottom:36px;}
+.timeline-item::before{content:'';position:absolute;left:-24px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--cream);border:2px solid var(--ink);transition:background .2s;}
+.timeline-item:hover::before{background:var(--ink);}
+.tl-date{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:1px;margin-bottom:6px;}
+.tl-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.tl-org{font-size:.83rem;color:var(--muted);margin-bottom:10px;}
+.tl-desc{font-size:.83rem;line-height:1.75;color:var(--ink-soft);}
+.download-btn{display:inline-flex;align-items:center;gap:10px;margin-top:40px;padding:14px 28px;border:1.5px solid var(--ink);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;color:var(--ink);text-decoration:none;cursor:none;transition:background .2s,color .2s,transform .2s;}
+.download-btn:hover{background:var(--ink);color:var(--cream);transform:translateY(-2px);}
+
+/* CERTIFICATIONS */
+#certifications{background:var(--alt);padding:120px 6% 80px;}
+.certs-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:60px;}
+.cert-chip{display:flex;align-items:center;gap:14px;padding:16px 20px;background:#fff;border:1px solid var(--border);border-radius:10px;cursor:none;transition:all .3s;}
+.cert-chip:hover{border-color:var(--green);transform:translateX(6px);}
+.cert-icon{width:36px;height:36px;border-radius:8px;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cert-icon svg{color:white;}
+.cert-name{font-size:.85rem;font-weight:600;color:var(--ink);}
+.cert-issuer{font-size:.75rem;color:var(--muted);margin-top:2px;}
+
+/* CONTACT */
+#contact{background:#fff;padding:120px 6% 80px;display:flex;flex-direction:column;justify-content:center;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-top:60px;align-items:start;}
+.contact-intro{font-size:.95rem;line-height:1.8;color:var(--ink-soft);margin-bottom:36px;}
+.contact-details{display:flex;flex-direction:column;gap:16px;}
+.contact-detail-item{display:flex;align-items:center;gap:14px;padding:16px 20px;border:1px solid var(--border);border-radius:10px;text-decoration:none;color:inherit;transition:border-color .2s,transform .2s;cursor:none;}
+.contact-detail-item:hover{border-color:var(--pink);transform:translateX(6px);}
+.contact-detail-icon{width:40px;height:40px;border-radius:8px;background:var(--pink-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.contact-detail-icon svg{color:var(--pink);}
+.contact-detail-label{font-size:.75rem;color:var(--muted);margin-bottom:2px;}
+.contact-detail-value{font-size:.88rem;font-weight:500;color:var(--ink);}
+.form-group{margin-bottom:20px;}
+.form-group label{display:block;font-size:.82rem;font-weight:600;color:var(--ink-soft);margin-bottom:8px;}
+.form-group input,.form-group textarea{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--ink);background:var(--cream);transition:border-color .2s;outline:none;}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--ink);}
+.form-group textarea{min-height:120px;resize:vertical;}
+.form-submit{padding:13px 28px;background:var(--ink);color:var(--cream);border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:none;transition:background .2s,transform .2s;}
+.form-submit:hover{background:var(--ink-soft);transform:translateY(-2px);}
+footer{background:var(--ink);padding:48px 6%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:rgba(255,255,255,.7);}
+.footer-copy{font-size:.78rem;color:rgba(255,255,255,.3);}
+.footer-links{display:flex;gap:20px;}
+.footer-link{color:rgba(255,255,255,.4);text-decoration:none;font-size:.82rem;transition:color .2s;}
+.footer-link:hover{color:#fff;}
+@media(max-width:900px){
+  #home,.about-grid,.projects-grid,.edu-grid,.resume-grid,.contact-grid{grid-template-columns:1fr;}
+  .about-grid{gap:40px;}
+  .about-photo-col{flex-direction:row;align-items:flex-start;gap:24px;}
+  .about-photo-frame{width:200px;height:260px;flex-shrink:0;}
+  .hamburger{display:flex;}
+  .nav-center,.nav-icons{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<nav id="navbar">
+  <a href="#home" class="nav-logo">Kanishka Arde</a>
+  <div class="nav-center">
+    <a href="#home" class="nav-link active">Home</a>
+    <a href="#about" class="nav-link">About</a>
+    <a href="#education" class="nav-link">Education</a>
+    <a href="#portfolio" class="nav-link">Projects</a>
+    <a href="#resume" class="nav-link">Resume</a>
+    <a href="#certifications" class="nav-link">Certifications</a>
+    <a href="#contact" class="nav-link">Contact</a>
+  </div>
+  <div class="nav-icons">
+    <a href="https://github.com/kanishkaaa13" target="_blank" class="nav-icon-link" title="GitHub">
+      <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/kanishka-arde" target="_blank" class="nav-icon-link" title="LinkedIn">
+      <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home" class="mobile-link">Home</a>
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#education" class="mobile-link">Education</a>
+  <a href="#portfolio" class="mobile-link">Projects</a>
+  <a href="#resume" class="mobile-link">Resume</a>
+  <a href="#certifications" class="mobile-link">Certifications</a>
+  <a href="#contact" class="mobile-link">Contact</a>
+</div>
+
+<!-- HOME -->
+<section id="home">
+  <div class="hero-text reveal">
+    <div class="hero-eyebrow"><span></span> E&TC Engineer</div>
+    <h1 class="hero-name">Kanishka<br><em>Arde</em></h1>
+    <p class="hero-title-line">Electronics & Telecommunication</p>
+    <p class="hero-desc">Passionate about bridging hardware and software — from embedded systems to full-stack development. Building the future one circuit at a time.</p>
+    <div class="hero-badges">
+      <span class="hero-badge">⚡ Embedded Systems</span>
+      <span class="hero-badge">💻 Full Stack Dev</span>
+      <span class="hero-badge">📡 IoT</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#portfolio" class="btn-primary">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        View Projects
+      </a>
+      <a href="#contact" class="btn-primary" style="background:transparent;border:1.5px solid rgba(255,255,255,0.3);color:#fff;">
+        Get In Touch
+      </a>
+    </div>
+  </div>
+  <div class="hero-visual reveal reveal-delay-2">
+    <div class="photo-frame">
+      <div class="photo-bg"></div>
+      <!-- Replace src with your actual photo URL -->
+      <img src="YOUR_PHOTO_URL_HERE" alt="Kanishka Arde" class="photo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="photo-placeholder" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <p><strong>Add Your Photo</strong>Replace the src attribute in the &lt;img&gt; tag with your photo URL</p>
+      </div>
+      <div class="photo-stamp stamp-1"><span class="ps-sm">E&TC</span><span class="ps-city">Engg.</span></div>
+      <div class="photo-stamp stamp-2"><span class="ps-sm">IoT</span><span class="ps-city">Dev</span></div>
+      <div class="photo-stamp stamp-3"><span class="ps-sm">2024</span><span class="ps-city">Grad</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT (Second Page) — NOW INCLUDES YOUR PHOTO -->
+<section id="about">
+  <div class="section-eyebrow reveal">About Me</div>
+  <h2 class="section-heading reveal reveal-delay-1">Crafting <em>solutions</em><br>at the intersection</h2>
+  <div class="about-grid">
+
+    <!-- PHOTO COLUMN (NEW) -->
+    <div class="about-photo-col reveal">
+      <div class="about-photo-frame">
+        <div class="about-photo-bg"></div>
+        <!--
+          ╔══════════════════════════════════════════════════╗
+          ║  HOW TO ADD YOUR PHOTO:                          ║
+          ║  Replace src="YOUR_PHOTO_URL_HERE" below with   ║
+          ║  your actual photo URL or relative path.        ║
+          ║  Example: src="photo.jpg" or                   ║
+          ║  src="https://example.com/kanishka.jpg"         ║
+          ╚══════════════════════════════════════════════════╝
+        -->
+        <img
+          src="YOUR_PHOTO_URL_HERE"
+          alt="Kanishka Arde"
+          class="about-photo-img"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        >
+        <div class="about-photo-placeholder" style="display:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+          <strong>Add Your Photo Here</strong>
+          <p>Replace <code>YOUR_PHOTO_URL_HERE</code> in the HTML with your actual photo path</p>
+        </div>
+      </div>
+      <span class="about-photo-tag">~ Kanishka ✨</span>
+    </div>
+
+    <!-- TEXT COLUMN -->
+    <div class="reveal reveal-delay-1">
+      <p class="about-body">I'm an Electronics & Telecommunication Engineering graduate with a deep passion for both hardware design and software development. My journey spans embedded systems, IoT solutions, and full-stack web applications.</p>
+      <p class="about-body">I thrive at the intersection of circuits and code — whether it's designing PCBs, programming microcontrollers, or building scalable web applications. I believe technology should solve real-world problems elegantly.</p>
+      <div class="about-stats">
+        <div>
+          <div class="stat-number">10+</div>
+          <div class="stat-label">Projects Completed</div>
+        </div>
+        <div>
+          <div class="stat-number">4+</div>
+          <div class="stat-label">Years of Study</div>
+        </div>
+        <div>
+          <div class="stat-number">5+</div>
+          <div class="stat-label">Certifications</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SKILLS COLUMN -->
+    <div class="reveal reveal-delay-2">
+      <div class="skills-title">Core Skills</div>
+      <div class="skill-item">
+        <div class="skill-header"><span>Embedded Systems / VLSI</span><span>90%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill pink" data-width="90"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header"><span>Web Development</span><span>82%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill blue" data-width="82"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header"><span>IoT & Microcontrollers</span><span>88%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill green" data-width="88"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header"><span>Signal Processing</span><span>75%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill purple" data-width="75"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header"><span>PCB Design</span><span>78%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill teal" data-width="78"></div></div>
+      </div>
+      <div class="system-health">
+        <div class="sh-header"><div class="sh-dot"></div> $ programming_proficiency</div>
+        <div class="sh-item">
+          <div class="sh-label"><span>Java / OOP</span><span>88%</span></div>
+          <div class="sh-bar-bg"><div class="sh-bar-fill java" data-width="88"></div></div>
+        </div>
+        <div class="sh-item">
+          <div class="sh-label"><span>Python</span><span>80%</span></div>
+          <div class="sh-bar-bg"><div class="sh-bar-fill python" data-width="80"></div></div>
+        </div>
+        <div class="sh-item">
+          <div class="sh-label"><span>SQL / Databases</span><span>75%</span></div>
+          <div class="sh-bar-bg"><div class="sh-bar-fill sql" data-width="75"></div></div>
+        </div>
+        <div class="sh-item">
+          <div class="sh-label"><span>DSA</span><span>72%</span></div>
+          <div class="sh-bar-bg"><div class="sh-bar-fill dsa" data-width="72"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-eyebrow reveal">Education</div>
+  <h2 class="section-heading reveal reveal-delay-1">Academic <em>Journey</em></h2>
+  <div class="edu-grid">
+    <div class="edu-card reveal">
+      <div class="edu-year">2020 — 2024</div>
+      <div class="edu-degree">B.E. in Electronics & Telecommunication</div>
+      <div class="edu-school">Engineering College, Pune</div>
+      <div class="edu-details">Specialization in embedded systems, VLSI design, digital communication and signal processing. Final year project on IoT-based smart systems.</div>
+      <span class="edu-tag">CGPA: 8.5+</span>
+    </div>
+    <div class="edu-card reveal reveal-delay-1">
+      <div class="edu-year">2018 — 2020</div>
+      <div class="edu-degree">HSC — Science (PCM)</div>
+      <div class="edu-school">Junior College, Maharashtra</div>
+      <div class="edu-details">Completed higher secondary education with focus on Physics, Chemistry and Mathematics. Strong foundation in analytical thinking and problem-solving.</div>
+      <span class="edu-tag">Distinction</span>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO — WITH TECH STACK -->
+<section id="portfolio">
+  <div class="portfolio-eyebrow reveal">Portfolio</div>
+  <h2 class="section-heading reveal reveal-delay-1" style="color:#fff;">Selected <em style="color:rgba(255,255,255,.6);">Projects</em></h2>
+  <div class="projects-grid">
+
+    <!-- PROJECT 1 -->
+    <div class="project-card reveal">
+      <div class="project-num">01 ——</div>
+      <div class="project-title">Smart Home Automation System</div>
+      <div class="project-desc">An IoT-based home automation system using ESP8266 microcontroller with real-time monitoring, voice control integration, and a mobile dashboard for remote management of home appliances.</div>
+      <div class="project-techstack-label">Tech Stack</div>
+      <div class="project-stack">
+        <span class="stack-tag hl">ESP8266</span>
+        <span class="stack-tag blue">Arduino C</span>
+        <span class="stack-tag green">MQTT</span>
+        <span class="stack-tag teal">Node.js</span>
+        <span class="stack-tag gold">Firebase</span>
+        <span class="stack-tag purple">HTML/CSS/JS</span>
+      </div>
+    </div>
+
+    <!-- PROJECT 2 -->
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-num">02 ——</div>
+      <div class="project-title">VLSI 4-bit ALU Design</div>
+      <div class="project-desc">Designed and simulated a 4-bit Arithmetic Logic Unit (ALU) in VHDL with full implementation on FPGA. Supports 8 arithmetic and 4 logical operations with optimized gate-level design.</div>
+      <div class="project-techstack-label">Tech Stack</div>
+      <div class="project-stack">
+        <span class="stack-tag hl">VHDL</span>
+        <span class="stack-tag blue">Xilinx Vivado</span>
+        <span class="stack-tag green">FPGA</span>
+        <span class="stack-tag purple">ModelSim</span>
+      </div>
+    </div>
+
+    <!-- PROJECT 3 -->
+    <div class="project-card reveal reveal-delay-2">
+      <div class="project-num">03 ——</div>
+      <div class="project-title">E-Commerce Web Application</div>
+      <div class="project-desc">Full-stack e-commerce platform with user authentication, product catalog, shopping cart, and payment gateway integration. RESTful API backend with React frontend and MySQL database.</div>
+      <div class="project-techstack-label">Tech Stack</div>
+      <div class="project-stack">
+        <span class="stack-tag hl">React.js</span>
+        <span class="stack-tag blue">Node.js</span>
+        <span class="stack-tag green">Express.js</span>
+        <span class="stack-tag teal">MySQL</span>
+        <span class="stack-tag gold">JWT Auth</span>
+        <span class="stack-tag purple">Razorpay API</span>
+      </div>
+    </div>
+
+    <!-- PROJECT 4 -->
+    <div class="project-card reveal reveal-delay-3">
+      <div class="project-num">04 ——</div>
+      <div class="project-title">Health Monitoring Wearable</div>
+      <div class="project-desc">A wearable device using Arduino Nano that tracks heart rate, SpO2, and body temperature in real-time. Data is wirelessly transmitted via Bluetooth to a companion Android app for health analytics.</div>
+      <div class="project-techstack-label">Tech Stack</div>
+      <div class="project-stack">
+        <span class="stack-tag hl">Arduino Nano</span>
+        <span class="stack-tag blue">MAX30102 Sensor</span>
+        <span class="stack-tag green">Bluetooth HC-05</span>
+        <span class="stack-tag teal">Android Studio</span>
+        <span class="stack-tag gold">Java</span>
+      </div>
+    </div>
+
+    <!-- PROJECT 5 -->
+    <div class="project-card reveal reveal-delay-4">
+      <div class="project-num">05 ——</div>
+      <div class="project-title">Digital Signal Processing Toolkit</div>
+      <div class="project-desc">A Python-based toolkit for digital signal processing with implementations of FIR/IIR filters, FFT analysis, noise reduction algorithms, and interactive visualization using Matplotlib and NumPy.</div>
+      <div class="project-techstack-label">Tech Stack</div>
+      <div class="project-stack">
+        <span class="stack-tag hl">Python</span>
+        <span class="stack-tag blue">NumPy</span>
+        <span class="stack-tag green">SciPy</span>
+        <span class="stack-tag teal">Matplotlib</span>
+        <span class="stack-tag purple">Jupyter</span>
+      </div>
+    </div>
+
+    <!-- PROJECT 6 -->
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-num">06 ——</div>
+      <div class="project-title">Student Management System</div>
+      <div class="project-desc">A Java-based desktop application for managing student records, attendance, and performance analytics. Features role-based access control for administrators, faculty, and students with a MySQL backend.</div>
+      <div class="project-techstack-label">Tech Stack</div>
+      <div class="project-stack">
+        <span class="stack-tag hl">Java</span>
+        <span class="stack-tag blue">JDBC</span>
+        <span class="stack-tag green">MySQL</span>
+        <span class="stack-tag teal">Java Swing</span>
+        <span class="stack-tag gold">MVC Pattern</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+  <div class="section-eyebrow reveal">Resume</div>
+  <h2 class="section-heading reveal reveal-delay-1">Experience &amp; <em>Skills</em></h2>
+  <div class="resume-grid">
+    <div>
+      <div class="resume-section-title">Contact</div>
+      <div class="contact-item">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        kanishka@example.com
+      </div>
+      <div class="contact-item">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        +91 XXXXX XXXXX
+      </div>
+      <div class="contact-item">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Pune, Maharashtra, India
+      </div>
+      <div style="margin-top:32px;">
+        <div class="resume-section-title">Languages</div>
+        <div class="lang-item"><span>English</span><div class="lang-dots"><div class="lang-dot filled"></div><div class="lang-dot filled"></div><div class="lang-dot filled"></div><div class="lang-dot filled"></div><div class="lang-dot"></div></div></div>
+        <div class="lang-item"><span>Marathi</span><div class="lang-dots"><div class="lang-dot filled"></div><div class="lang-dot filled"></div><div class="lang-dot filled"></div><div class="lang-dot filled"></div><div class="lang-dot filled"></div></div></div>
+        <div class="lang-item"><span>Hindi</span><div class="lang-dots"><div class="lang-dot filled"></div><div class="lang-dot filled"></div><div class="lang-dot filled"></div><div class="lang-dot filled"></div><div class="lang-dot"></div></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="resume-section-title">Experience & Projects</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="tl-date">2023 — 2024</div>
+          <div class="tl-title">Final Year Project</div>
+          <div class="tl-org">Engineering College, Pune</div>
+          <div class="tl-desc">Developed an IoT-based smart home automation system integrating multiple sensors, microcontrollers, and a cloud backend for real-time monitoring and control.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-date">Summer 2023</div>
+          <div class="tl-title">Internship — Embedded Systems</div>
+          <div class="tl-org">Tech Company, Pune</div>
+          <div class="tl-desc">Worked on firmware development for IoT devices, PCB testing, and schematic design. Gained hands-on experience with oscilloscopes, multimeters, and JTAG debugging.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-date">2022 — 2023</div>
+          <div class="tl-title">Web Development Projects</div>
+          <div class="tl-org">Self-directed Learning</div>
+          <div class="tl-desc">Built multiple full-stack web applications using React, Node.js, and MySQL. Participated in college hackathons and won recognition for innovative IoT solutions.</div>
+        </div>
+      </div>
+      <a href="#" class="download-btn">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Resume (PDF)
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-eyebrow reveal">Certifications</div>
+  <h2 class="section-heading reveal reveal-delay-1">Credentials &amp; <em>Courses</em></h2>
+  <div class="certs-list">
+    <div class="cert-chip reveal">
+      <div class="cert-icon"><svg width="18" height="18" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div><div class="cert-name">Java Programming</div><div class="cert-issuer">Udemy / NPTEL</div></div>
+    </div>
+    <div class="cert-chip reveal reveal-delay-1">
+      <div class="cert-icon" style="background:var(--blue);"><svg width="18" height="18" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div><div class="cert-name">Web Development Bootcamp</div><div class="cert-issuer">Udemy</div></div>
+    </div>
+    <div class="cert-chip reveal reveal-delay-2">
+      <div class="cert-icon" style="background:var(--purple);"><svg width="18" height="18" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div><div class="cert-name">IoT & Embedded Systems</div><div class="cert-issuer">Coursera / NPTEL</div></div>
+    </div>
+    <div class="cert-chip reveal">
+      <div class="cert-icon" style="background:var(--gold);"><svg width="18" height="18" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div><div class="cert-name">Data Structures & Algorithms</div><div class="cert-issuer">HackerRank</div></div>
+    </div>
+    <div class="cert-chip reveal reveal-delay-1">
+      <div class="cert-icon" style="background:var(--teal);"><svg width="18" height="18" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div><div class="cert-name">Python for Data Science</div><div class="cert-issuer">Cognitive Class / IBM</div></div>
+    </div>
+    <div class="cert-chip reveal reveal-delay-2">
+      <div class="cert-icon" style="background:var(--pink);"><svg width="18" height="18" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div><div class="cert-name">PCB Design Fundamentals</div><div class="cert-issuer">Udemy</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-eyebrow reveal">Contact</div>
+  <h2 class="section-heading reveal reveal-delay-1">Let's <em>Connect</em></h2>
+  <div class="contact-grid">
+    <div class="reveal">
+      <p class="contact-intro">I'm always open to exciting opportunities, collaborations, or just a good conversation about technology. Feel free to reach out!</p>
+      <div class="contact-details">
+        <a href="mailto:kanishka@example.com" class="contact-detail-item">
+          <div class="contact-detail-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div><div class="contact-detail-label">Email</div><div class="contact-detail-value">kanishka@example.com</div></div>
+        </a>
+        <a href="https://github.com/kanishkaaa13" target="_blank" class="contact-detail-item">
+          <div class="contact-detail-icon"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></div>
+          <div><div class="contact-detail-label">GitHub</div><div class="contact-detail-value">@kanishkaaa13</div></div>
+        </a>
+        <a href="https://linkedin.com/in/kanishka-arde" target="_blank" class="contact-detail-item">
+          <div class="contact-detail-icon" style="background:#eff6ff;"><svg width="18" height="18" fill="var(--blue)" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
+          <div><div class="contact-detail-label">LinkedIn</div><div class="contact-detail-value">Kanishka Arde</div></div>
+        </a>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" placeholder="Jane Smith">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" placeholder="jane@example.com">
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Hi Kanishka, I'd love to connect about..."></textarea>
+      </div>
+      <button class="form-submit">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Kanishka Arde</div>
+  <div class="footer-copy">© 2024 All rights reserved</div>
+  <div class="footer-links">
+    <a href="https://github.com/kanishkaaa13" target="_blank" class="footer-link">GitHub</a>
+    <a href="https://linkedin.com/in/kanishka-arde" target="_blank" class="footer-link">LinkedIn</a>
+  </div>
+</footer>
+
+<script>
+// Custom cursor
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+function animateCursor() {
+  dot.style.transform = `translate(${mouseX - 4}px, ${mouseY - 4}px)`;
+  ringX += (mouseX - ringX - 18) * 0.12;
+  ringY += (mouseY - ringY - 18) * 0.12;
+  ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+document.querySelectorAll('a, button, .project-card, .cert-chip, .contact-detail-item').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
+});
+
+// Progress bar
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.body.scrollHeight - window.innerHeight;
+  document.getElementById('progressBar').style.width = (scrollTop / docHeight * 100) + '%';
+  // Nav scroll class
+  document.getElementById('navbar').classList.toggle('scrolled', scrollTop > 20);
+  // Active nav link
+  document.querySelectorAll('section').forEach(section => {
+    const rect = section.getBoundingClientRect();
+    if (rect.top <= 80 && rect.bottom > 80) {
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + section.id);
+      });
+    }
+  });
+});
+
+// Reveal on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Skill bars animation
+const skillObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.querySelectorAll('[data-width]').forEach(bar => {
+        setTimeout(() => { bar.style.width = bar.dataset.width + '%'; }, 200);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('#about').forEach(el => skillObserver.observe(el));
+
+// Mobile menu
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+document.querySelectorAll('.mobile-link').forEach(link => {
+  link.addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
+});
+</script>
+</body>
+</html>
