@@ -701,6 +701,122 @@ document.getElementById('hamburger').addEventListener('click', () => {
 document.querySelectorAll('.mobile-link').forEach(link => {
   link.addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
 });
+
+// ── SPACE ANIMATION ──────────────────────────────
+(function() {
+  var canvas = document.getElementById('star-canvas') || document.createElement('canvas');
+  if (!canvas.id) {
+    canvas.id = 'star-canvas';
+    var home = document.getElementById('home');
+    if (!home) return;
+    home.style.position = 'relative';
+    home.insertBefore(canvas, home.firstChild);
+  }
+  var home = document.getElementById('home');
+  if (!home) return;
+  var ctx = canvas.getContext('2d');
+  
+  function resize() {
+    canvas.width = home.offsetWidth;
+    canvas.height = home.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Twinkling stars
+  var stars = [];
+  for (var i = 0; i < 120; i++) {
+    stars.push({
+      x: Math.random(),
+      y: Math.random(),
+      r: Math.random() * 1.8 + 0.3,
+      alpha: Math.random(),
+      speed: Math.random() * 0.008 + 0.002,
+      dir: Math.random() > 0.5 ? 1 : -1,
+      color: Math.random() > 0.7 ? '#7ec8e3' : '#ffffff'
+    });
+  }
+
+  // Shooting stars
+  var shoots = [];
+  function spawnShoot() {
+    shoots.push({
+      x: Math.random() * 0.7,
+      y: Math.random() * 0.4,
+      len: Math.random() * 120 + 80,
+      speed: Math.random() * 6 + 6,
+      alpha: 1,
+      angle: Math.PI / 5
+    });
+  }
+  setInterval(spawnShoot, 2200);
+
+  // Floating orbs (planet glow effect)
+  var orbs = [
+    { x: 0.12, y: 0.75, r: 28, color: 'rgba(100,200,220,0.08)', speed: 0.0003 },
+    { x: 0.85, y: 0.35, r: 45, color: 'rgba(80,160,255,0.06)', speed: 0.0002 },
+    { x: 0.5,  y: 0.9,  r: 20, color: 'rgba(120,220,200,0.07)', speed: 0.0004 }
+  ];
+  var t = 0;
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var W = canvas.width, H = canvas.height;
+    t += 0.016;
+
+    // Draw twinkling stars
+    stars.forEach(function(s) {
+      s.alpha += s.speed * s.dir;
+      if (s.alpha > 1) { s.alpha = 1; s.dir = -1; }
+      if (s.alpha < 0.1) { s.alpha = 0.1; s.dir = 1; }
+      ctx.save();
+      ctx.globalAlpha = s.alpha;
+      ctx.fillStyle = s.color;
+      ctx.beginPath();
+      ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // Draw floating orbs
+    orbs.forEach(function(o) {
+      var ox = o.x * W + Math.sin(t * o.speed * 1000) * 15;
+      var oy = o.y * H + Math.cos(t * o.speed * 800) * 10;
+      var grad = ctx.createRadialGradient(ox, oy, 0, ox, oy, o.r * W / 300);
+      grad.addColorStop(0, o.color.replace('0.0', '0.2'));
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.beginPath();
+      ctx.arc(ox, oy, o.r * W / 300, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+    });
+
+    // Draw shooting stars
+    for (var i = shoots.length - 1; i >= 0; i--) {
+      var s = shoots[i];
+      var sx = s.x * W, sy = s.y * H;
+      var ex = sx + Math.cos(s.angle) * s.len;
+      var ey = sy + Math.sin(s.angle) * s.len;
+      var grad = ctx.createLinearGradient(sx, sy, ex, ey);
+      grad.addColorStop(0, 'rgba(255,255,255,0)');
+      grad.addColorStop(0.5, 'rgba(180,230,255,' + s.alpha + ')');
+      grad.addColorStop(1, 'rgba(255,255,255,' + s.alpha * 0.6 + ')');
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      ctx.lineTo(ex, ey);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      s.x += Math.cos(s.angle) * s.speed / W;
+      s.y += Math.sin(s.angle) * s.speed / H;
+      s.alpha -= 0.018;
+      if (s.alpha <= 0) shoots.splice(i, 1);
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
 </script>
 </body>
 </html>
