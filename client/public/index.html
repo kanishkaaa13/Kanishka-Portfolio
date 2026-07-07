@@ -310,26 +310,7 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
     <source src="/assets/earth-rotation.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay"></div>
-  <div class="hero-text reveal" style="display:flex;flex-direction:column;align-items:center;text-align:center;max-width:800px;margin:0 auto;z-index:2;">
-    <div class="hero-eyebrow"><span></span> E&TC Engineer</div>
-    <h1 class="hero-name">Kanishka<br><em>Arde</em></h1>
-    <p class="hero-title-line">Electronics & Telecommunication</p>
-    <p class="hero-desc" style="max-width: 600px;">Passionate about bridging hardware and software — from embedded systems to full-stack development. Building the future one circuit at a time.</p>
-    <div class="hero-badges" style="justify-content:center;">
-      <span class="hero-badge">⚡ Embedded Systems</span>
-      <span class="hero-badge">💻 Full Stack Dev</span>
-      <span class="hero-badge">📡 IoT</span>
-    </div>
-    <div class="hero-cta" style="justify-content:center;">
-      <a href="#portfolio" class="btn-primary">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-        View Projects
-      </a>
-      <a href="#contact" class="btn-primary" style="background:transparent;border:1.5px solid rgba(255,255,255,0.3);color:#fff;">
-        Get In Touch
-      </a>
-    </div>
-  </div>
+  <div id="hero-intro-root" style="width:100%; display:flex; justify-content:center; z-index:2;"></div>
   </section>
 
 <!-- WAVE TRANSITION: dark hero -> light about -->
@@ -400,27 +381,7 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
 
     <!-- SKILLS COLUMN -->
     <div class="reveal reveal-delay-2">
-      <div class="skills-title">Core Skills</div>
-      <div class="skill-item">
-        <div class="skill-header"><span>Machine Learning / AI</span><span>85%</span></div>
-        <div class="skill-bar-bg"><div class="skill-bar-fill pink" data-width="85"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-header"><span>Python</span><span>90%</span></div>
-        <div class="skill-bar-bg"><div class="skill-bar-fill blue" data-width="90"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-header"><span>Edge AI / Embedded Systems</span><span>88%</span></div>
-        <div class="skill-bar-bg"><div class="skill-bar-fill green" data-width="88"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-header"><span>Full-Stack Development</span><span>82%</span></div>
-        <div class="skill-bar-bg"><div class="skill-bar-fill purple" data-width="82"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-header"><span>Data Pipelines</span><span>80%</span></div>
-        <div class="skill-bar-bg"><div class="skill-bar-fill teal" data-width="80"></div></div>
-      </div>
+      <div id="skills-cloud-root"></div>
       <div class="system-health">
         <div class="sh-titlebar">
           <div class="sh-win-btn close"></div>
@@ -696,6 +657,7 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
           <div><div class="contact-detail-label">LinkedIn</div><div class="contact-detail-value">Kanishka Arde</div></div>
         </a>
       </div>
+      <div id="map-widget-root" style="margin-top: 40px;"></div>
     </div>
     <form id="contactForm" class="reveal reveal-delay-1">
       <div class="form-group">
@@ -838,5 +800,6 @@ if (contactForm) {
   });
 }
 </script>
+<script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
