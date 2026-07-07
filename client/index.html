@@ -187,6 +187,13 @@ section{min-height:100vh;position:relative;overflow:hidden;}
 /* RESUME */
 #resume{background:radial-gradient(ellipse 80% 50% at 80% 50%,#f5f1ea 0%,var(--cream) 60%,#f8f6f2 100%);padding:120px 6% 80px;display:flex;flex-direction:column;justify-content:center;}
 .resume-grid{display:grid;grid-template-columns:1fr 2fr;gap:60px;margin-top:60px;}
+@media (min-width: 901px) {
+  .resume-sidebar {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+  }
+}
 .resume-section-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:2px;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);}
 .contact-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;font-size:.85rem;color:var(--ink-soft);}
 .contact-item svg{flex-shrink:0;margin-top:2px;color:var(--muted);}
@@ -194,10 +201,10 @@ section{min-height:100vh;position:relative;overflow:hidden;}
 .lang-dots{display:flex;gap:4px;}
 .lang-dot{width:8px;height:8px;border-radius:50%;background:var(--border);}
 .lang-dot.filled{background:var(--ink);}
-.timeline{position:relative;padding-left:28px;}
-.timeline::before{content:'';position:absolute;left:4px;top:8px;bottom:8px;width:1.5px;background:linear-gradient(to bottom,var(--pink),var(--purple),var(--teal));opacity:0.3;}
+.timeline{position:relative;padding-left:28px;margin-bottom:50px;}
+.timeline::before{content:'';position:absolute;left:4px;top:26px;bottom:26px;width:1.5px;background:linear-gradient(to bottom,var(--pink),var(--purple),var(--teal));opacity:0.3;}
 .timeline-item{position:relative;margin-bottom:36px;}
-.timeline-item::before{content:'';position:absolute;left:-24px;top:8px;width:10px;height:10px;border-radius:50%;background:var(--cream);border:2px solid var(--ink);transition:background .2s,box-shadow .2s;}
+.timeline-item::before{content:'';position:absolute;left:-24px;top:26px;width:10px;height:10px;border-radius:50%;background:var(--cream);border:2px solid var(--ink);transition:background .2s,box-shadow .2s;}
 .timeline-item:hover::before{background:var(--pink);border-color:var(--pink);box-shadow:0 0 0 4px rgba(233,30,122,0.12);}
 .tl-date{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:1px;margin-bottom:6px;}
 .tl-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--ink);margin-bottom:4px;}
@@ -539,15 +546,21 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
     <!-- PROJECT 5 -->
     <div class="project-card reveal reveal-delay-4">
       <div class="project-num">05 ——</div>
-      <div class="project-title">Neko Desktop Pet</div>
-      <div class="project-desc">Transparent overlay virtual desktop companion built with Electron. Features custom sprite animation states, real-time mouse cursor tracking, complex pounce/hunt sequences, and a local HTTP integration server for LLM agent connectivity.</div>
+      <div class="project-title-row">
+        <div class="project-title">Crop Survey</div>
+        <a href="https://github.com/kanishkaaa13/Crop-survey" target="_blank" class="project-github-link" title="View on GitHub">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+      </div>
+      <div class="project-desc">A spatial analysis and crop health assessment system utilizing satellite imagery and IoT soil parameters to classify crop yield prospects. Implements a classification pipeline for digital mapping of crop stress with an interactive GIS web interface.</div>
       <div class="project-techstack-label">Tech Stack</div>
       <div class="project-stack">
-        <span class="stack-tag hl">Electron</span>
-        <span class="stack-tag blue">TypeScript</span>
-        <span class="stack-tag green">React</span>
-        <span class="stack-tag purple">CSS sprites</span>
-        <span class="stack-tag teal">Node.js</span>
+        <span class="stack-tag hl">Python</span>
+        <span class="stack-tag blue">TensorFlow</span>
+        <span class="stack-tag green">Leaflet.js</span>
+        <span class="stack-tag purple">PostgreSQL</span>
+        <span class="stack-tag teal">Django</span>
+        <span class="stack-tag gold">Rasterio</span>
       </div>
     </div>
 
@@ -575,7 +588,7 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
   <div class="section-eyebrow reveal">Resume</div>
   <h2 class="section-heading reveal reveal-delay-1">Experience &amp; <em>Skills</em></h2>
   <div class="resume-grid">
-    <div>
+    <div class="resume-sidebar">
       <div class="resume-section-title">Contact</div>
       <div class="contact-item">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
