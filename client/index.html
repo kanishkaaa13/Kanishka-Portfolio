@@ -46,7 +46,8 @@ section{min-height:100vh;position:relative;overflow:hidden;}
 
 /* HOME */
 #home{display:flex;align-items:center;justify-content:center;padding:100px 6% 60px;background:#080605;position:relative;overflow:hidden;}
-#star-canvas{position:absolute;inset:0;z-index:1;pointer-events:none;display:block;}
+#hero-video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;}
+.hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1;pointer-events:none;}
 .hero-text{position:relative;z-index:2;}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7ec8e3;margin-bottom:28px;}
 .hero-eyebrow span{display:inline-block;width:30px;height:1px;background:var(--muted);}
@@ -305,7 +306,10 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
 
 <!-- HOME -->
 <section id="home">
-  <canvas id="star-canvas"></canvas>
+  <video id="hero-video" autoplay loop muted playsinline poster="/assets/earth-fallback.jpg">
+    <source src="/assets/earth-rotation.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
   <div class="hero-text reveal" style="display:flex;flex-direction:column;align-items:center;text-align:center;max-width:800px;margin:0 auto;z-index:2;">
     <div class="hero-eyebrow"><span></span> E&TC Engineer</div>
     <h1 class="hero-name">Kanishka<br><em>Arde</em></h1>
@@ -783,186 +787,28 @@ document.querySelectorAll('.mobile-link').forEach(link => {
   link.addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
 });
 
-// ── SPACE ANIMATION ──────────────────────────────
+// ── HERO VIDEO REDUCED MOTION CONTROL ────────────
 (function() {
-  var canvas = document.getElementById('star-canvas') || document.createElement('canvas');
-  if (!canvas.id) {
-    canvas.id = 'star-canvas';
-    var home = document.getElementById('home');
-    if (!home) return;
-    home.style.position = 'relative';
-    home.insertBefore(canvas, home.firstChild);
-  }
-  var home = document.getElementById('home');
-  if (!home) return;
-  var ctx = canvas.getContext('2d');
-  
-  function resize() {
-    canvas.width = home.offsetWidth;
-    canvas.height = home.offsetHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
+  var video = document.getElementById('hero-video');
+  if (!video) return;
 
-  // Reduced motion media query setup
   var mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  var prefersReducedMotion = mediaQuery.matches;
-  mediaQuery.addEventListener('change', function(e) {
-    prefersReducedMotion = e.matches;
-  });
-
-  // Twinkling & Drifting stars
-  var stars = [];
-  for (var i = 0; i < 120; i++) {
-    stars.push({
-      x: Math.random(),
-      y: Math.random(),
-      r: Math.random() * 1.8 + 0.3,
-      alpha: Math.random(),
-      speed: Math.random() * 0.008 + 0.002,
-      dir: Math.random() > 0.5 ? 1 : -1,
-      color: Math.random() > 0.7 ? '#7ec8e3' : '#ffffff',
-      dx: (Math.random() - 0.5) * 0.00015,
-      dy: (Math.random() - 0.5) * 0.00015
-    });
-  }
-
-  // Shooting stars
-  var shoots = [];
-  function spawnShoot() {
-    shoots.push({
-      x: Math.random() * 0.7,
-      y: Math.random() * 0.4,
-      len: Math.random() * 120 + 80,
-      speed: Math.random() * 6 + 6,
-      alpha: 1,
-      angle: Math.PI / 5
-    });
-  }
-  setInterval(function() {
-    if (!prefersReducedMotion) {
-      spawnShoot();
-    }
-  }, 2200);
-
-  // Floating orbs (planet glow effect)
-  var orbs = [
-    { x: 0.12, y: 0.75, r: 28, color: 'rgba(100,200,220,0.08)', speed: 0.0003 },
-    { x: 0.85, y: 0.35, r: 45, color: 'rgba(80,160,255,0.06)', speed: 0.0002 },
-    { x: 0.5,  y: 0.9,  r: 20, color: 'rgba(120,220,200,0.07)', speed: 0.0004 }
-  ];
-  
-  var t = 0;
-  var mouseX = 0, mouseY = 0;
-  var targetMouseX = 0, targetMouseY = 0;
-
-  home.addEventListener('mousemove', function(e) {
-    var rect = home.getBoundingClientRect();
-    targetMouseX = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
-    targetMouseY = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-  });
-
-  home.addEventListener('mouseleave', function() {
-    targetMouseX = 0;
-    targetMouseY = 0;
-  });
-
-  function draw() {
-    var W = canvas.width, H = canvas.height;
-    if (W === 0 || H === 0) {
-      requestAnimationFrame(draw);
-      return;
-    }
-
-    if (!prefersReducedMotion) {
-      t += 0.003;
-      mouseX += (targetMouseX - mouseX) * 0.05;
-      mouseY += (targetMouseY - mouseY) * 0.05;
+  function checkMotion(e) {
+    if (e.matches) {
+      video.pause();
     } else {
-      mouseX = 0;
-      mouseY = 0;
+      video.play().catch(function() {
+        // Autoplay policy fallback
+      });
     }
-
-    ctx.clearRect(0, 0, W, H);
-
-    // 1. Draw slow-moving gradient nebula background
-    var nebX = W * 0.5 + Math.sin(t * 0.8) * W * 0.15 + mouseX * 40;
-    var nebY = H * 0.5 + Math.cos(t * 0.6) * H * 0.1 + mouseY * 30;
-    var nebulaGrad = ctx.createRadialGradient(nebX, nebY, 0, nebX, nebY, Math.max(W, H) * 0.85);
-    nebulaGrad.addColorStop(0, '#191220');
-    nebulaGrad.addColorStop(0.35, '#0a101c');
-    nebulaGrad.addColorStop(1, '#080605');
-    ctx.fillStyle = nebulaGrad;
-    ctx.fillRect(0, 0, W, H);
-
-    // 2. Draw twinkling & drifting stars
-    stars.forEach(function(s) {
-      if (!prefersReducedMotion) {
-        s.x += s.dx;
-        s.y += s.dy;
-        if (s.x > 1.05) s.x = -0.05;
-        if (s.x < -0.05) s.x = 1.05;
-        if (s.y > 1.05) s.y = -0.05;
-        if (s.y < -0.05) s.y = 1.05;
-
-        s.alpha += s.speed * s.dir;
-        if (s.alpha > 1) { s.alpha = 1; s.dir = -1; }
-        if (s.alpha < 0.1) { s.alpha = 0.1; s.dir = 1; }
-      }
-
-      var px = s.x * W + mouseX * s.r * 12;
-      var py = s.y * H + mouseY * s.r * 12;
-
-      ctx.save();
-      ctx.globalAlpha = s.alpha;
-      ctx.fillStyle = s.color;
-      ctx.beginPath();
-      ctx.arc(px, py, s.r, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    });
-
-    // 3. Draw floating orbs (planet glow)
-    orbs.forEach(function(o) {
-      var ox = o.x * W + Math.sin(t * o.speed * 1000) * 15 + mouseX * 25;
-      var oy = o.y * H + Math.cos(t * o.speed * 800) * 10 + mouseY * 20;
-      var grad = ctx.createRadialGradient(ox, oy, 0, ox, oy, o.r * W / 300);
-      grad.addColorStop(0, o.color.replace('0.0', '0.2'));
-      grad.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.beginPath();
-      ctx.arc(ox, oy, o.r * W / 300, 0, Math.PI * 2);
-      ctx.fillStyle = grad;
-      ctx.fill();
-    });
-
-    // 4. Draw shooting stars
-    for (var i = shoots.length - 1; i >= 0; i--) {
-      var s = shoots[i];
-      var sx = s.x * W + mouseX * 50, sy = s.y * H + mouseY * 40;
-      var ex = sx + Math.cos(s.angle) * s.len;
-      var ey = sy + Math.sin(s.angle) * s.len;
-      var grad = ctx.createLinearGradient(sx, sy, ex, ey);
-      grad.addColorStop(0, 'rgba(255,255,255,0)');
-      grad.addColorStop(0.5, 'rgba(180,230,255,' + s.alpha + ')');
-      grad.addColorStop(1, 'rgba(255,255,255,' + s.alpha * 0.6 + ')');
-      ctx.beginPath();
-      ctx.moveTo(sx, sy);
-      ctx.lineTo(ex, ey);
-      ctx.strokeStyle = grad;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      if (!prefersReducedMotion) {
-        s.x += Math.cos(s.angle) * s.speed / W;
-        s.y += Math.sin(s.angle) * s.speed / H;
-        s.alpha -= 0.018;
-      }
-      if (s.alpha <= 0) shoots.splice(i, 1);
-    }
-
-    requestAnimationFrame(draw);
   }
-  draw();
+
+  checkMotion(mediaQuery);
+  if (typeof mediaQuery.addEventListener === 'function') {
+    mediaQuery.addEventListener('change', checkMotion);
+  } else if (typeof mediaQuery.addListener === 'function') {
+    mediaQuery.addListener(checkMotion);
+  }
 })();
 
 // ── CONTACT FORM MAILTO SUBMISSION ────────────────
