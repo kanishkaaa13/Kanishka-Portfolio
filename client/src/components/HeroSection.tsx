@@ -30,11 +30,22 @@ export default function HeroSection() {
         )}
       </AnimatePresence>
 
-      {/* 3D Curved Gallery Background */}
-      <CurvedGallery />
-
-      {/* Hero Text and Taglines Overlay */}
+      {/* Hero Text overlay — sits in top portion (z-index 3) */}
       <HeroIntro isLoaded={isLoaded} />
+
+      {/* 3D Curved Gallery — occupies the lower 55% of the hero */}
+      <div
+        style={{
+          position: "absolute",
+          top: "44%",
+          left: 0,
+          width: "100%",
+          height: "56%",
+          zIndex: 1,
+        }}
+      >
+        <CurvedGallery />
+      </div>
     </div>
   );
 }

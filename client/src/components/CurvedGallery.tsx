@@ -12,6 +12,7 @@ const projects = [
 
 export default function CurvedGallery() {
   const [isMobile, setIsMobile] = useState(false);
+  const [isWebGLSupported, setIsWebGLSupported] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
 
@@ -21,14 +22,27 @@ export default function CurvedGallery() {
     };
     handleResize();
     window.addEventListener("resize", handleResize);
+
+    // Capability check: Verify WebGL support
+    try {
+      const canvas = document.createElement("canvas");
+      const support = !!(
+        window.WebGLRenderingContext &&
+        (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
+      );
+      setIsWebGLSupported(support);
+    } catch (e) {
+      setIsWebGLSupported(false);
+    }
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Performance Guardrail: Hide and pause the background video on desktop to save resources
+  // Performance Guardrail: Hide background video on desktop/WebGL-supported screens, play it as fallback on mobile/WebGL-disabled screens
   useEffect(() => {
     const video = document.getElementById("hero-video");
     if (video) {
-      if (isMobile) {
+      if (isMobile || !isWebGLSupported) {
         (video as HTMLVideoElement).style.display = "block";
         (video as HTMLVideoElement).play().catch(() => {});
       } else {
@@ -36,9 +50,9 @@ export default function CurvedGallery() {
         (video as HTMLVideoElement).pause();
       }
     }
-  }, [isMobile]);
+  }, [isMobile, isWebGLSupported]);
 
-  if (isMobile) {
+  if (isMobile || !isWebGLSupported) {
     return null;
   }
 

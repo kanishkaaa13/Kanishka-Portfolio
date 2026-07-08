@@ -19,9 +19,9 @@ body{font-family:'DM Sans',sans-serif;background:radial-gradient(ellipse 120% 80
 .cursor-dot{width:8px;height:8px;background:var(--ink);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;}
 .cursor-ring{width:36px;height:36px;border:1.5px solid var(--ink);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .3s,height .3s,opacity .3s;}
 .cursor-ring.hovered{width:60px;height:60px;opacity:.4;}
-.progress-bar{position:fixed;top:64px;left:0;width:0%;height:2px;background:linear-gradient(90deg,var(--pink),var(--purple),var(--blue));z-index:1001;}
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 6%;height:64px;background:rgba(250,248,244,.93);backdrop-filter:blur(20px);border-bottom:1px solid rgba(232,227,218,.6);transition:box-shadow .3s;}
-nav.scrolled{box-shadow:0 2px 30px rgba(0,0,0,.06);}
+.progress-bar{position:fixed;top:64px;left:0;width:0%;height:2px;background:linear-gradient(90deg,var(--pink),var(--purple),var(--blue));z-index:1001;transition:width 0.15s linear;}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 6%;height:64px;background:rgba(250,248,244,.93);backdrop-filter:blur(20px);border-bottom:1px solid rgba(232,227,218,.6);transition:box-shadow .3s,height .35s cubic-bezier(.16,1,.3,1),padding .35s cubic-bezier(.16,1,.3,1),backdrop-filter .3s;}
+nav.scrolled{box-shadow:0 4px 32px rgba(0,0,0,.09);height:50px;backdrop-filter:blur(32px) saturate(1.4);}
 .nav-logo{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:600;color:var(--ink);text-decoration:none;white-space:nowrap;}
 .nav-center{display:flex;align-items:center;gap:2px;}
 .nav-link{text-decoration:none;color:var(--ink-soft);font-size:.85rem;font-weight:500;padding:6px 14px;border-radius:4px;position:relative;transition:color .2s;}
@@ -42,6 +42,12 @@ nav.scrolled{box-shadow:0 2px 30px rgba(0,0,0,.06);}
 .reveal-delay-2{transition-delay:.2s;}
 .reveal-delay-3{transition-delay:.3s;}
 .reveal-delay-4{transition-delay:.4s;}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.reveal-left.visible{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.reveal-right.visible{opacity:1;transform:translateX(0);}
+.reveal-scale{opacity:0;transform:scale(0.92) translateY(20px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+.reveal-scale.visible{opacity:1;transform:scale(1) translateY(0);}
 section{min-height:100vh;position:relative;overflow:hidden;}
 
 /* HOME */
@@ -89,7 +95,8 @@ section{min-height:100vh;position:relative;overflow:hidden;}
 .section-heading em{font-style:italic;font-weight:300;}
 .about-body{font-size:.95rem;line-height:1.85;color:var(--ink-soft);margin-bottom:20px;}
 .bio-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;margin-bottom:28px;color:var(--ink);}
-.about-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.25rem;line-height:1.45;color:var(--pink);margin:24px 0;padding-left:16px;border-left:3px solid var(--pink);}
+.about-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.25rem;line-height:1.45;color:var(--ink-soft);margin:24px 0;padding-left:20px;position:relative;border-left:none;}
+.about-quote::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--pink),var(--purple),var(--blue));border-radius:2px;}
 
 /* STAT CARDS — interactive gradient cards */
 .about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;padding-top:40px;border-top:1px solid var(--border);}
@@ -168,6 +175,8 @@ section{min-height:100vh;position:relative;overflow:hidden;}
 .project-card::after{content:'';position:absolute;inset:0;border-radius:18px;border:1px solid transparent;background:linear-gradient(135deg,rgba(255,255,255,0),rgba(255,255,255,0.05)) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:destination-out;mask-composite:exclude;opacity:0;transition:opacity .45s;}
 .project-card:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,0.15);transform:translateY(-10px) scale(1.01);box-shadow:0 24px 60px rgba(0,0,0,0.4),0 0 0 1px rgba(255,255,255,0.06);}
 .project-card:hover::after{opacity:1;}
+.project-card::before{content:'';position:absolute;inset:0;border-radius:18px;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,0.07) 50%,transparent 62%);transform:translateX(-100%);z-index:2;pointer-events:none;}
+.project-card:hover::before{transform:translateX(100%);transition:transform 0.65s ease;}
 .project-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:rgba(255,255,255,.28);letter-spacing:3px;margin-bottom:16px;}
 .project-title{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:700;color:rgba(255,255,255,.92);line-height:1.3;margin-bottom:0;}
 .project-title-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
@@ -255,6 +264,14 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
 .footer-link{color:rgba(255,255,255,.4);text-decoration:none;font-size:.82rem;transition:color .2s;}
 .footer-link:hover{color:#fff;}
 @keyframes shimmer{0%{background-position:-200% 0;}100%{background-position:200% 0;}}
+@keyframes orbit-cw{to{transform:translate(-50%,-50%) rotate(360deg);}}
+@keyframes orbit-ccw{to{transform:translate(-50%,-50%) rotate(-360deg);}}
+/* Skills orbit container */
+.skills-orbit-container{position:relative;width:430px;height:430px;margin:20px auto 0;display:flex;align-items:center;justify-content:center;}
+.skills-flat-fallback{display:none;}
+/* Currently building badge */
+.currently-building{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:8px 16px;border-radius:50px;background:linear-gradient(135deg,rgba(233,30,122,0.08),rgba(124,92,191,0.08));border:1px solid rgba(124,92,191,0.2);font-size:.78rem;font-weight:600;color:var(--purple);letter-spacing:0.5px;}
+.currently-building .cb-dot{width:7px;height:7px;border-radius:50%;background:var(--pink);animation:blink 1.5s ease-in-out infinite;}
 @media(max-width:900px){
   #home,.about-grid,.projects-grid,.edu-grid,.resume-grid,.contact-grid{grid-template-columns:1fr;}
   .about-grid{gap:40px;}
@@ -263,6 +280,8 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
   .hamburger{display:flex;}
   .nav-center,.nav-icons{display:none;}
   .stat-card{padding:16px;}
+  .skills-orbit-container{display:none;}
+  .skills-flat-fallback{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start;padding-bottom:16px;}
 }
 </style>
 </head>
@@ -332,7 +351,7 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
   <div class="about-grid">
 
     <!-- PHOTO COLUMN (NEW) -->
-    <div class="about-photo-col reveal">
+    <div class="about-photo-col reveal-left">
       <div class="about-photo-frame">
         <div class="about-photo-bg"></div>
         <!--
@@ -362,11 +381,16 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
     </div>
 
     <!-- TEXT COLUMN -->
-    <div class="reveal reveal-delay-1">
+    <div class="reveal-right reveal-delay-1">
       <div class="bio-title">My Story</div>
       <p class="about-body">I'm an Electronics &amp; Telecommunication Engineering graduate with a deep passion for <strong>bridging hardware and software</strong> — from embedded systems to full-stack development.</p>
       <blockquote class="about-quote">"I thrive at the intersection of circuits and code — designing robust systems from the physical layer up to the cloud."</blockquote>
+      <p class="about-body">My fascination with Electronics &amp; Telecommunications stems from the magic of invisible signals and physical circuits. Deciphering communication protocols, programming microcontrollers, and observing real-world data transition into digital actions is what inspires me. I love creating systems where elegant software meets physical hardware precision.</p>
       <p class="about-body">I believe technology should solve real-world problems elegantly, combining hardware precision with software scalability to deliver robust end-to-end solutions.</p>
+      <div class="currently-building">
+        <span class="cb-dot"></span>
+        Currently Building: Curved 3D Gallery Component
+      </div>
       <div class="about-stats">
         <div class="stat-card">
           <div class="stat-number">10+</div>
@@ -384,7 +408,7 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
     </div>
 
     <!-- SKILLS COLUMN -->
-    <div class="reveal reveal-delay-2">
+    <div class="reveal-scale reveal-delay-2">
       <div id="skills-cloud-root"></div>
       <div class="system-health">
         <div class="sh-titlebar">
@@ -421,14 +445,14 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
   <div class="section-eyebrow reveal">Education</div>
   <h2 class="section-heading reveal reveal-delay-1">Academic <em>Journey</em></h2>
   <div class="edu-grid">
-    <div class="edu-card reveal">
+    <div class="edu-card reveal-left">
       <div class="edu-year">2020 — 2024</div>
       <div class="edu-degree">B.E. in Electronics & Telecommunication</div>
       <div class="edu-school">Engineering College, Pune</div>
       <div class="edu-details">Specialization in embedded systems, VLSI design, digital communication and signal processing. Final year project on IoT-based smart systems.</div>
       <span class="edu-tag">CGPA: 8.5+</span>
     </div>
-    <div class="edu-card reveal reveal-delay-1">
+    <div class="edu-card reveal-right reveal-delay-1">
       <div class="edu-year">2018 — 2020</div>
       <div class="edu-degree">HSC — Science (PCM)</div>
       <div class="edu-school">Junior College, Maharashtra</div>
@@ -709,6 +733,22 @@ document.querySelectorAll('a, button, .project-card, .cert-chip, .contact-detail
   el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
 });
 
+// Magnetic buttons logic
+document.querySelectorAll('.footer-link, .form-submit, .contact-detail-item, .nav-icon-link').forEach(button => {
+  button.addEventListener('mousemove', e => {
+    const rect = button.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    button.style.transition = 'none';
+    button.style.transform = `translate3d(${x * 0.35}px, ${y * 0.35}px, 0)`;
+  });
+  button.addEventListener('mouseleave', () => {
+    button.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
+    button.style.transform = 'translate3d(0, 0, 0)';
+  });
+});
+
+
 // Progress bar
 window.addEventListener('scroll', () => {
   const scrollTop = window.scrollY;
@@ -731,7 +771,7 @@ window.addEventListener('scroll', () => {
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => observer.observe(el));
 
 // Skill bars animation
 const skillObserver = new IntersectionObserver(entries => {
