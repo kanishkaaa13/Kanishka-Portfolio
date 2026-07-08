@@ -495,3 +495,30 @@
 .highlight-project {
   animation: pulseHighlight 2s ease-in-out 1;
 }
+
+/* Background outline text layer in Hero section */
+.hero-bg-text-layer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(6rem, 18vw, 22rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: transparent;
+  WebkitTextStroke: 1.5px rgba(255, 255, 255, 0.04);
+  text-stroke: 1.5px rgba(255, 255, 255, 0.04);
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1; /* Behind WebGL Canvas */
+  letter-spacing: 4px;
+}
+
+/* Responsive Hide on mobile screen size */
+@media (max-width: 480px) {
+  .hero-bg-text-layer {
+    display: none;
+  }
+}
