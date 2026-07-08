@@ -388,3 +388,110 @@
     inset: -1px;
   }
 }
+
+/* Curved Gallery Bottom Navigation */
+.gallery-nav-container {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(26, 24, 20, 0.45);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 50px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  pointer-events: auto;
+  user-select: none;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+}
+
+.gallery-nav-container:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(26, 24, 20, 0.65);
+}
+
+.gallery-nav-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  pointer-events: auto;
+}
+
+.gallery-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.gallery-nav-btn:active {
+  transform: scale(0.9);
+}
+
+.gallery-nav-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 20px;
+  transition: background 0.2s;
+  pointer-events: auto;
+}
+
+.gallery-nav-info:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.gallery-nav-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.gallery-nav-info:hover .gallery-nav-thumb {
+  transform: scale(1.1);
+  border-color: var(--pink);
+}
+
+.gallery-nav-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+/* Highlight project card on scroll deep link */
+@keyframes pulseHighlight {
+  0% {
+    box-shadow: 0 0 0 0 rgba(233, 30, 122, 0.4);
+    border-color: rgba(233, 30, 122, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px 8px rgba(233, 30, 122, 0.35);
+    border-color: var(--pink);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(233, 30, 122, 0);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.highlight-project {
+  animation: pulseHighlight 2s ease-in-out 1;
+}
