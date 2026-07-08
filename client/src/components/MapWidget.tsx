@@ -18,8 +18,8 @@ export default function MapWidget() {
       .catch((err) => console.error("Error fetching world map SVG:", err));
   }, []);
 
-  const puneX = 576;
-  const puneY = 472;
+  const puneX = 568;
+  const puneY = 492;
 
   return (
     <motion.div
