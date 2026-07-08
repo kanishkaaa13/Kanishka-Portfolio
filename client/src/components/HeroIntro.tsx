@@ -47,9 +47,13 @@ export default function HeroIntro({ isLoaded }: { isLoaded: boolean }) {
           alignItems: "center",
           textAlign: "center",
           maxWidth: "800px",
-          margin: "0 auto",
-          zIndex: 2,
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          zIndex: 3,
           pointerEvents: "none",
+          width: "100%",
         }}
       >
           {/* Eyebrow */}
@@ -145,9 +149,13 @@ function StaticHeroContent() {
         alignItems: "center",
         textAlign: "center",
         maxWidth: "800px",
-        margin: "0 auto",
-        zIndex: 2,
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        zIndex: 3,
         pointerEvents: "none",
+        width: "100%",
       }}
     >
       <div className="hero-eyebrow">
