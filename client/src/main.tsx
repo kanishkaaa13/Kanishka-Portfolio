@@ -1,25 +1,13 @@
-import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import HeroIntro from "./components/HeroIntro";
+import HeroSection from "./components/HeroSection";
 import SkillsCloud from "./components/SkillsCloud";
 import MapWidget from "./components/MapWidget";
-import CurvedGallery from "./components/CurvedGallery";
 import "./index.css";
 
-// 1. Mount 3D Curved Gallery Scaffold
+// 1. Mount 3D Curved Gallery & Hero Text Coordinator
 const galleryRoot = document.getElementById("hero-gallery-root");
 if (galleryRoot) {
-  createRoot(galleryRoot).render(
-    <Suspense fallback={<div style={{ color: "white", padding: 20 }}>Loading 3D Canvas...</div>}>
-      <CurvedGallery />
-    </Suspense>
-  );
-}
-
-// 2. Mount Hero Intro Loader
-const heroRoot = document.getElementById("hero-intro-root");
-if (heroRoot) {
-  createRoot(heroRoot).render(<HeroIntro />);
+  createRoot(galleryRoot).render(<HeroSection />);
 }
 
 // 3. Mount Skills Cloud

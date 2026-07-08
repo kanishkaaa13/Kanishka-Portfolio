@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function HeroIntro() {
-  const [count, setCount] = useState(0);
-  const [isLoaderDone, setIsLoaderDone] = useState(false);
-  const [shouldPlay, setShouldPlay] = useState(false);
+export default function HeroIntro({ isLoaded }: { isLoaded: boolean }) {
+  const [skipAnimation, setSkipAnimation] = useState(false);
 
   useEffect(() => {
     // Check prefers-reduced-motion
@@ -13,129 +11,47 @@ export default function HeroIntro() {
     const alreadyShown = sessionStorage.getItem("hero-intro-shown") === "true";
 
     if (reducedMotion || alreadyShown) {
-      setIsLoaderDone(true);
-    } else {
-      setShouldPlay(true);
-      // Run counter 0 -> 100 in 1000ms
-      const duration = 1000;
-      const stepTime = 10;
-      const steps = duration / stepTime;
-      let step = 0;
-
-      const timer = setInterval(() => {
-        step += 1;
-        const progress = Math.min(Math.floor((step / steps) * 100), 100);
-        setCount(progress);
-
-        if (step >= steps) {
-          clearInterval(timer);
-          sessionStorage.setItem("hero-intro-shown", "true");
-          // Hold 100% briefly, then trigger loader exit
-          setTimeout(() => {
-            setIsLoaderDone(true);
-          }, 200);
-        }
-      }, stepTime);
-
-      return () => clearInterval(timer);
+      setSkipAnimation(true);
     }
   }, []);
 
-  if (isLoaderDone && !shouldPlay) {
+  if (skipAnimation) {
     // Render static hero instantly with no loader overlay and no entry animations
     return <StaticHeroContent />;
   }
 
+  if (!isLoaded) {
+    return null;
+  }
+
   return (
     <>
-      <AnimatePresence>
-        {!isLoaderDone && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              position: "fixed",
-              inset: 0,
-              backgroundColor: "#000",
-              zIndex: 9999,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden",
-            }}
-          >
-            {/* Outline Background Name */}
-            <motion.h2
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ opacity: 0.3, scale: 1 }}
-              exit={{ scale: 1.4, opacity: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: "clamp(3rem, 10vw, 8rem)",
-                fontWeight: 700,
-                color: "transparent",
-                WebkitTextStroke: "1px rgba(255,255,255,0.3)",
-                textStroke: "1px rgba(255,255,255,0.3)",
-                textTransform: "uppercase",
-                whiteSpace: "nowrap",
-                position: "absolute",
-                textAlign: "center",
-                userSelect: "none",
-                pointerEvents: "none",
-              } as any}
-            >
-              Kanishka Arde
-            </motion.h2>
-
-            {/* Counter */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "clamp(3rem, 8vw, 7rem)",
-                fontWeight: 300,
-                color: "#fff",
-                zIndex: 10,
-              }}
-            >
-              {count}%
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Hero Content Entry */}
-      {isLoaderDone && (
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: {
-                staggerChildren: 0.12,
-                delayChildren: 0.1,
-              },
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: {
+              staggerChildren: 0.12,
+              delayChildren: 0.1,
             },
-          }}
-          className="hero-text reveal visible"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
-            maxWidth: "800px",
-            margin: "0 auto",
-            zIndex: 2,
-            pointerEvents: "none",
-          }}
-        >
+          },
+        }}
+        className="hero-text reveal visible"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+          maxWidth: "800px",
+          margin: "0 auto",
+          zIndex: 2,
+          pointerEvents: "none",
+        }}
+      >
           {/* Eyebrow */}
           <motion.div
             variants={{
@@ -215,7 +131,6 @@ export default function HeroIntro() {
             </a>
           </motion.div>
         </motion.div>
-      )}
     </>
   );
 }
