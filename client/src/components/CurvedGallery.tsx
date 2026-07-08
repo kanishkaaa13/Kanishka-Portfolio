@@ -15,6 +15,20 @@ export default function CurvedGallery() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Performance Guardrail: Hide and pause the background video on desktop to save resources
+  useEffect(() => {
+    const video = document.getElementById("hero-video");
+    if (video) {
+      if (isMobile) {
+        (video as HTMLVideoElement).style.display = "block";
+        (video as HTMLVideoElement).play().catch(() => {});
+      } else {
+        (video as HTMLVideoElement).style.display = "none";
+        (video as HTMLVideoElement).pause();
+      }
+    }
+  }, [isMobile]);
+
   if (isMobile) {
     return null;
   }
@@ -27,10 +41,9 @@ export default function CurvedGallery() {
         gl={{ alpha: true, antialias: true }}
         style={{ width: "100%", height: "100%" }}
       >
-        <ambientLight intensity={0.4} />
-        <directionalLight position={[5, 5, 5]} intensity={1.2} castShadow />
-        <directionalLight position={[-5, 5, -5]} intensity={0.4} />
-        <pointLight position={[0, -2, 2]} intensity={0.6} color="#7c5cbf" />
+        {/* Basic lighting: one ambient light + one directional light */}
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[5, 5, 5]} intensity={1.5} castShadow />
 
         <CurvedScreen />
 
@@ -102,9 +115,9 @@ function CurvedScreen() {
         Arguments: 
         radiusTop: 5, radiusBottom: 5, height: 2.2, 
         radialSegments: 64, heightSegments: 1, openEnded: true,
-        thetaStart: Math.PI * 1.35, thetaLength: Math.PI * 0.3
+        thetaStart: Math.PI * 0.85, thetaLength: Math.PI * 0.3
       */}
-      <cylinderGeometry args={[5, 5, 2.2, 64, 1, true, Math.PI * 1.35, Math.PI * 0.3]} />
+      <cylinderGeometry args={[5, 5, 2.2, 64, 1, true, Math.PI * 0.85, Math.PI * 0.3]} />
       <meshStandardMaterial
         map={texture}
         roughness={0.4}

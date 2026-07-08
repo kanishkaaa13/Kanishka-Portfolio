@@ -43,7 +43,7 @@ export default function SkillsCloud() {
       scale: 1,
       rotate: rotation,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 15,
       },

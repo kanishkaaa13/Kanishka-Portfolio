@@ -84,7 +84,7 @@ export default function HeroIntro() {
                 textAlign: "center",
                 userSelect: "none",
                 pointerEvents: "none",
-              }}
+              } as any}
             >
               Kanishka Arde
             </motion.h2>
@@ -133,6 +133,7 @@ export default function HeroIntro() {
             maxWidth: "800px",
             margin: "0 auto",
             zIndex: 2,
+            pointerEvents: "none",
           }}
         >
           {/* Eyebrow */}
@@ -187,7 +188,7 @@ export default function HeroIntro() {
               visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
             }}
             className="hero-badges"
-            style={{ justifyContent: "center" }}
+            style={{ justifyContent: "center", pointerEvents: "auto" }}
           >
             <span className="hero-badge">⚡ Embedded Systems</span>
             <span className="hero-badge">💻 Full Stack Dev</span>
@@ -201,7 +202,7 @@ export default function HeroIntro() {
               visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
             }}
             className="hero-cta"
-            style={{ justifyContent: "center" }}
+            style={{ justifyContent: "center", pointerEvents: "auto" }}
           >
             <a href="#portfolio" className="btn-primary">
               <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -231,6 +232,7 @@ function StaticHeroContent() {
         maxWidth: "800px",
         margin: "0 auto",
         zIndex: 2,
+        pointerEvents: "none",
       }}
     >
       <div className="hero-eyebrow">
@@ -245,12 +247,12 @@ function StaticHeroContent() {
       <p className="hero-desc" style={{ maxWidth: "600px" }}>
         Passionate about bridging hardware and software — from embedded systems to full-stack development. Building the future one circuit at a time.
       </p>
-      <div className="hero-badges" style={{ justifyContent: "center" }}>
+      <div className="hero-badges" style={{ justifyContent: "center", pointerEvents: "auto" }}>
         <span className="hero-badge">⚡ Embedded Systems</span>
         <span className="hero-badge">💻 Full Stack Dev</span>
         <span className="hero-badge">📡 IoT</span>
       </div>
-      <div className="hero-cta" style={{ justifyContent: "center" }}>
+      <div className="hero-cta" style={{ justifyContent: "center", pointerEvents: "auto" }}>
         <a href="#portfolio" className="btn-primary">
           <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
