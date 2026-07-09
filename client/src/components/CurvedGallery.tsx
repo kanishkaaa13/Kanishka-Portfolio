@@ -67,14 +67,10 @@ export default function CurvedGallery() {
   };
 
   const handleThumbnailClick = () => {
-    const targetElement = document.getElementById(projects[activeIndex].targetId);
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: "smooth" });
-      targetElement.classList.add("highlight-project");
-      setTimeout(() => {
-        targetElement.classList.remove("highlight-project");
-      }, 2000);
-    }
+    const projectId = projects[activeIndex].targetId;
+    window.dispatchEvent(
+      new CustomEvent("project-detail-open", { detail: { id: projectId } })
+    );
   };
 
   return (

@@ -176,6 +176,16 @@ export default function HeroIntro({ isLoaded }: { isLoaded: boolean }) {
             <TypingText />
           </motion.div>
 
+          {/* Kinetic Tagline */}
+          <motion.div
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { duration: 0.4, ease: "easeOut" } },
+            }}
+          >
+            <KineticLine />
+          </motion.div>
+
           {/* Description */}
           <motion.p
             variants={{
@@ -241,6 +251,11 @@ function StaticHeroContent() {
       </h1>
       <p className="hero-title-line">
         Electronics &amp; Telecommunication
+      </p>
+      <p className="hero-title-line" style={{ display: "flex", gap: "0.35em", justifyContent: "center", flexWrap: "wrap" }}>
+        {KINETIC_WORDS.map((word, i) => (
+          <span key={i} style={{ display: "inline-block" }}>{word}</span>
+        ))}
       </p>
       <p className="hero-desc" style={{ maxWidth: "600px" }}>
         Passionate about bridging hardware and software — from embedded systems to full-stack development. Building the future one circuit at a time.

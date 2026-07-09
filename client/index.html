@@ -272,6 +272,37 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
 /* Currently building badge */
 .currently-building{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:8px 16px;border-radius:50px;background:linear-gradient(135deg,rgba(233,30,122,0.08),rgba(124,92,191,0.08));border:1px solid rgba(124,92,191,0.2);font-size:.78rem;font-weight:600;color:var(--purple);letter-spacing:0.5px;}
 .currently-building .cb-dot{width:7px;height:7px;border-radius:50%;background:var(--pink);animation:blink 1.5s ease-in-out infinite;}
+/* AI JOURNEY TIMELINE */
+#ai-journey{background:linear-gradient(160deg,#0e0d0b 0%,#1a1814 50%,#12100e 100%);padding:80px 6% 80px;position:relative;overflow:hidden;}
+.ai-timeline-desktop{display:block;overflow-x:auto;padding:20px 0 40px;}
+.ai-timeline-mobile{display:none;}
+.ai-timeline-track{display:flex;align-items:center;position:relative;min-width:max-content;padding:40px 40px 60px;}
+.ai-timeline-line{position:absolute;top:50%;left:40px;right:40px;height:4px;transform:translateY(-50%);}
+.ai-timeline-node{display:flex;flex-direction:column;align-items:center;min-width:120px;position:relative;z-index:2;}
+.ai-timeline-dot-wrapper{position:relative;width:16px;height:16px;margin-bottom:14px;}
+.ai-timeline-dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#e91e7a,#7c5cbf,#2563eb);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;transition:transform 0.25s;}
+.ai-timeline-node:hover .ai-timeline-dot{transform:translate(-50%,-50%) scale(1.6);}
+.ai-timeline-glow{position:absolute;inset:-4px;border-radius:50%;background:linear-gradient(135deg,rgba(233,30,122,0.3),rgba(124,92,191,0.3));filter:blur(6px);opacity:0.5;transition:opacity 0.3s;}
+.ai-timeline-node:hover .ai-timeline-glow{opacity:1;}
+.ai-timeline-label{text-align:center;opacity:0.6;transition:opacity 0.3s;}
+.ai-timeline-node:hover .ai-timeline-label{opacity:1;}
+.ai-timeline-year{display:block;font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:#e91e7a;letter-spacing:2px;margin-bottom:4px;}
+.ai-timeline-text{font-size:0.78rem;color:rgba(255,255,255,0.7);white-space:nowrap;font-weight:500;}
+.ai-timeline-vertical-track{position:relative;padding-left:28px;}
+.ai-timeline-vertical-line{position:absolute;left:7px;top:0;bottom:0;width:4px;}
+.ai-timeline-v-node{display:flex;align-items:center;gap:16px;margin-bottom:28px;position:relative;z-index:2;}
+.ai-timeline-v-label{display:flex;flex-direction:column;}
+
+/* RESEARCH CARD TREATMENT — ExoSeekers */
+.project-card[data-research="true"]{position:relative;}
+.project-card[data-research="true"] .research-abstract{max-height:0;opacity:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(.16,1,.3,1),opacity 0.35s,margin 0.35s;margin-top:0;}
+.project-card[data-research="true"]:hover .research-abstract{max-height:80px;opacity:1;margin-top:14px;}
+.project-card[data-research="true"]:hover{transform:translateY(-12px) scale(1.02);box-shadow:0 28px 70px rgba(0,0,0,0.45),0 0 0 1px rgba(255,255,255,0.08);}
+.research-abstract p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.82rem;line-height:1.6;color:rgba(255,255,255,0.38);border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;}
+
+/* ANIMATED STATS - 4 columns */
+.about-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px;padding-top:40px;border-top:1px solid var(--border);}
+
 @media(max-width:900px){
   #home,.about-grid,.projects-grid,.edu-grid,.resume-grid,.contact-grid{grid-template-columns:1fr;}
   .about-grid{gap:40px;}
@@ -282,6 +313,9 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
   .stat-card{padding:16px;}
   .skills-orbit-container{display:none;}
   .skills-flat-fallback{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start;padding-bottom:16px;}
+  .ai-timeline-desktop{display:none;}
+  .ai-timeline-mobile{display:block;}
+  .about-stats{grid-template-columns:repeat(2,1fr);}
 }
 </style>
 </head>
@@ -391,20 +425,7 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
         <span class="cb-dot"></span>
         Currently Building: Curved 3D Gallery Component
       </div>
-      <div class="about-stats">
-        <div class="stat-card">
-          <div class="stat-number">10+</div>
-          <div class="stat-label">Projects Completed</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">4+</div>
-          <div class="stat-label">Years of Study</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">5+</div>
-          <div class="stat-label">Certifications</div>
-        </div>
-      </div>
+      <div id="animated-stats-root"></div>
     </div>
 
     <!-- SKILLS COLUMN -->
@@ -440,6 +461,13 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
   </div>
 </section>
 
+<!-- AI JOURNEY TIMELINE -->
+<section id="ai-journey">
+  <div class="section-eyebrow reveal" style="color:rgba(255,255,255,.4);">My AI Journey</div>
+  <h2 class="section-heading reveal reveal-delay-1" style="color:#fff;">From Circuits to <em style="color:rgba(255,255,255,.6);">Intelligence</em></h2>
+  <div id="ai-timeline-root"></div>
+</section>
+
 <!-- EDUCATION -->
 <section id="education">
   <div class="section-eyebrow reveal">Education</div>
@@ -469,7 +497,7 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
   <div class="projects-grid">
 
     <!-- PROJECT 1 -->
-    <div class="project-card reveal" id="project-exoseekers">
+    <div class="project-card reveal" id="project-exoseekers" data-research="true">
       <div class="project-num">01 ——</div>
       <div class="project-title">ExoSeekers</div>
       <div class="project-desc">AI-powered exoplanet transit detection pipeline developed for the ISRO Bharatiya Antariksh Hackathon 2026. Processes NASA TESS light curve data through a 4-stage pipeline (astrophysical filters → BLS/TLS detection → physics-based parameter estimation → 1D CNN + XGBoost classifier) to surface prime candidate targets.</div>
@@ -481,6 +509,9 @@ footer{background:linear-gradient(135deg,#0d0c0a 0%,#1a1814 60%,#12100e 100%);pa
         <span class="stack-tag purple">1D CNN</span>
         <span class="stack-tag teal">XGBoost</span>
         <span class="stack-tag gold">Recharts</span>
+      </div>
+      <div class="research-abstract">
+        <p>Processing NASA TESS light curve data through a 4-stage ML pipeline to identify prime exoplanet transit candidates across 63+ targets.</p>
       </div>
     </div>
 
@@ -844,6 +875,7 @@ if (contactForm) {
   });
 }
 </script>
+<div id="project-detail-root"></div>
 <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
