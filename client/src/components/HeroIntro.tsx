@@ -1,5 +1,35 @@
 import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+
+const KINETIC_WORDS = "Building Intelligent Systems.".split(" ");
+
+function KineticLine() {
+  return (
+    <motion.p
+      className="hero-title-line"
+      style={{ minHeight: "2rem", display: "flex", gap: "0.35em", justifyContent: "center", flexWrap: "wrap" }}
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: 0.08, delayChildren: 0.3 } },
+      }}
+    >
+      {KINETIC_WORDS.map((word, i) => (
+        <motion.span
+          key={i}
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+          }}
+          style={{ display: "inline-block" }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </motion.p>
+  );
+}
 
 const TYPING_PHRASES = [
   "Electronics & Telecommunication",
